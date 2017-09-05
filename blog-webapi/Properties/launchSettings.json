@@ -3,7 +3,7 @@
     "windowsAuthentication": false,
     "anonymousAuthentication": true,
     "iisExpress": {
-      "applicationUrl": "http://localhost:61165/",
+      "applicationUrl": "http://localhost:61165/blogView/Hello.html",
       "sslPort": 0
     }
   },
