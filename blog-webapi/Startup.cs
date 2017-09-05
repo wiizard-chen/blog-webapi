@@ -8,6 +8,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using blog.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace blog_webapi
 {
@@ -24,6 +26,8 @@ namespace blog_webapi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
+            var conn = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<BloggingContext>(options => options.UseSqlServer(conn));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

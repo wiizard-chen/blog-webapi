@@ -9,6 +9,7 @@ namespace blog_webapi.Controllers
     [Route("api/[controller]")]
     public class ValuesController : Controller
     {
+
         // GET api/values
         [HttpGet]
         public IEnumerable<string> Get()
@@ -25,8 +26,10 @@ namespace blog_webapi.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public IActionResult Post([FromBody]string value)
         {
+            //return CreatedAtRoute("GetTodo", Json(new { name = "fuck", sex = "man" }));
+            return Json(new { name = "fuck", sex = "man" });
         }
 
         // PUT api/values/5
