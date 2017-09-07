@@ -1,0 +1,23 @@
+{
+  "name": "blogview",
+  "version": "1.0.0",
+  "description": "wiizard-blog",
+  "main": "index.js",
+  "dependencies": {
+    "iview": "^2.3.0",
+    "marked": "^0.3.6"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "well"
+  },
+  "repository": {
+    "type": "git",
+    "url": "noe"
+  },
+  "keywords": [
+    "well"
+  ],
+  "author": "wiizard",
+  "license": "WTFPL"
+}

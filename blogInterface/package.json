@@ -1,0 +1,9 @@
+{
+  "name": "blog-interface",
+  "version": "0.0.0",
+  "description": "blogInterface",
+  "main": "app.js",
+  "author": {
+    "name": "wiizard"
+  }
+}

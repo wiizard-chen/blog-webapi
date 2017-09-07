@@ -26,7 +26,6 @@ namespace blog_webapi
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            //connect the db
             var conn = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<BloggingContext>(options => options.UseSqlServer(conn));
         }
@@ -37,6 +36,7 @@ namespace blog_webapi
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
             }
 
             app.UseMvc();
