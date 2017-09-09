@@ -9,11 +9,40 @@
     <script src="node_modules/jquery/dist/jquery.min.js"></script>
     <script src="node_modules/marked/lib/marked.js"></script>
     <title>Document</title>
+    <style>
+        .TitleImage {
+            height: 300px;
+            border: solid 2px;
+            font-size: 16px;
+            background-image: url(Materials/GAMING.jpg);
+            background-size: cover;
+        }
+        .TitleText {
+            position: absolute;
+            bottom: 0px;
+            left: 38%;
+            right:25%;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 0, 0, .24);
+        }
+        .Title {
+            position:relative;
+            background: black;
+            position: relative;
+            display: block;
+        }
+    </style>
 </head>
 <body>
-   <div id="content">
+    <!-- 文章标题背景图片 -->
+    <div class="Title">
+        <div class="TitleImage"></div>
+        <h1 class="TitleText"></h1>
+    </div>
 
-   </div>
+    <!--文章内容-->
+    <div id="content">
+    </div>
 
     <script>
         $.get("/MarkdownFiles/test.md", function (response, status, xhr) {
