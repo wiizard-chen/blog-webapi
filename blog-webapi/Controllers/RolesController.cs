@@ -7,94 +7,96 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using blog.Models;
 using blogModel;
-using blog_webapi.Utility;
 
 namespace blog_webapi.Controllers
 {
     [Route("api/[controller]")]
-    public class UsersController : Controller
+    public class RolesController : Controller
     {
-        //不需要带方法名
-
         private readonly BloggingContext _context;
 
-        public UsersController(BloggingContext context) {
+        public RolesController(BloggingContext context) {
             _context = context;
         }
 
-        // GET: Users
+        // GET: Roles
         [HttpGet]
         public async Task<IActionResult> Index() {
-            var bloggingContext = _context.Users.Include(r => r.Roles);
+            var bloggingContext = _context.Roles.Include(r => r.User);
             var list = await bloggingContext.ToListAsync();
-            list.ForEach(r => r.Roles.ForEach(n => n.User = null));
-            
-            return Json(list);
-            //return View();
-            //return Json(new { name = "fuck", sex = "man" });
+            list.ForEach(r => r.User.Roles = null);
+            JsonResult jsonResult = new JsonResult(bloggingContext.ToList());
+            return jsonResult;
         }
 
-        // GET: Users/Details/5
-        [HttpGet("{id?}")]
+        // GET: Roles/Details/5
         public async Task<IActionResult> Details(int? id) {
-            if (id == null)
-                return JsonStaticMethod.Nothing();
-            var user = await _context.Users
+            if (id == null) {
+                return NotFound();
+            }
+
+            var role = await _context.Roles
+                .Include(r => r.User)
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (user == null)
-                return JsonStaticMethod.Nothing();
-            return Json(user);
+            if (role == null) {
+                return NotFound();
+            }
+
+            return View(role);
         }
 
-        // GET: Users/Create
+        // GET: Roles/Create
         public IActionResult Create() {
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id");
             return View();
         }
 
-        // POST: Users/Create
+        // POST: Roles/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,UserName,Password,UserMail,CreateDate,Active")] User user) {
+        public async Task<IActionResult> Create([Bind("Id,RoleName,UserId")] Role role) {
             if (ModelState.IsValid) {
-                _context.Add(user);
+                _context.Add(role);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", role.UserId);
+            return View(role);
         }
 
-        // GET: Users/Edit/5
+        // GET: Roles/Edit/5
         public async Task<IActionResult> Edit(int? id) {
             if (id == null) {
                 return NotFound();
             }
 
-            var user = await _context.Users.SingleOrDefaultAsync(m => m.Id == id);
-            if (user == null) {
+            var role = await _context.Roles.SingleOrDefaultAsync(m => m.Id == id);
+            if (role == null) {
                 return NotFound();
             }
-            return View(user);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", role.UserId);
+            return View(role);
         }
 
-        // POST: Users/Edit/5
+        // POST: Roles/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,UserName,Password,UserMail,CreateDate,Active")] User user) {
-            if (id != user.Id) {
+        public async Task<IActionResult> Edit(int id, [Bind("Id,RoleName,UserId")] Role role) {
+            if (id != role.Id) {
                 return NotFound();
             }
 
             if (ModelState.IsValid) {
                 try {
-                    _context.Update(user);
+                    _context.Update(role);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException) {
-                    if (!UserExists(user.Id)) {
+                    if (!RoleExists(role.Id)) {
                         return NotFound();
                     }
                     else {
@@ -103,36 +105,38 @@ namespace blog_webapi.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(user);
+            ViewData["UserId"] = new SelectList(_context.Users, "Id", "Id", role.UserId);
+            return View(role);
         }
 
-        // GET: Users/Delete/5
+        // GET: Roles/Delete/5
         public async Task<IActionResult> Delete(int? id) {
             if (id == null) {
                 return NotFound();
             }
 
-            var user = await _context.Users
+            var role = await _context.Roles
+                .Include(r => r.User)
                 .SingleOrDefaultAsync(m => m.Id == id);
-            if (user == null) {
+            if (role == null) {
                 return NotFound();
             }
 
-            return View(user);
+            return View(role);
         }
 
-        // POST: Users/Delete/5
+        // POST: Roles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id) {
-            var user = await _context.Users.SingleOrDefaultAsync(m => m.Id == id);
-            _context.Users.Remove(user);
+            var role = await _context.Roles.SingleOrDefaultAsync(m => m.Id == id);
+            _context.Roles.Remove(role);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool UserExists(int id) {
-            return _context.Users.Any(e => e.Id == id);
+        private bool RoleExists(int id) {
+            return _context.Roles.Any(e => e.Id == id);
         }
     }
 }

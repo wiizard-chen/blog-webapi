@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,6 +11,15 @@
     <script src="node_modules/marked/lib/marked.js"></script>
     <title>Document</title>
     <style>
+        body {
+            background: #fff;
+        }
+
+         ::selection {
+            background: #d3d3d3;
+            color: #fff;
+        }
+
         .TitleImage {
             height: 300px;
             border: solid 2px;
@@ -17,37 +27,43 @@
             background-image: url(Materials/GAMING.jpg);
             background-size: cover;
         }
+
         .TitleText {
             position: absolute;
             bottom: 0px;
             left: 38%;
-            right:25%;
+            right: 25%;
             color: #fff;
             text-shadow: 0 0 10px rgba(0, 0, 0, .24);
         }
+
         .Title {
-            position:relative;
+            position: relative;
             background: black;
             position: relative;
             display: block;
         }
     </style>
 </head>
+
 <body>
     <!-- 文章标题背景图片 -->
     <div class="Title">
         <div class="TitleImage"></div>
-        <h1 class="TitleText"></h1>
+        <h1 class="TitleText">This a test</h1>
     </div>
 
     <!--文章内容-->
-    <div id="content">
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div id="content" class="col-md-4"></div>
+        <div class="col-md-4"></div>
     </div>
-
     <script>
         $.get("/MarkdownFiles/test.md", function (response, status, xhr) {
             $("#content").html(marked(response));
         });
     </script>
 </body>
+
 </html>
